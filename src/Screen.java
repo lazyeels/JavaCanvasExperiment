@@ -1,50 +1,95 @@
-import java.awt.*;
-import javax.swing.JFrame;
+import java.awt.*;       // Using AWT's Graphics and Color
+import javax.swing.*;    // Using Swing's components and containers
+import java.awt.event.*; // Using AWT's event classes and listener interfaces
 
-public class Screen extends Draw
-{
-   public JFrame frame;
-   public Canvas canvas;
-   public int screenHeight;
-   public int screenWidth;
+/** Custom Drawing Code Template */
+// A Swing application extends javax.swing.JFrame
+public class Screen extends JFrame {
+    // Define constants
+    public static final int CANVAS_WIDTH  = 640;
+    public static final int CANVAS_HEIGHT = 480;
+    public static final Color CANVAS_BACKGROUND = Color.BLACK;
 
-   public Screen()
-   {
-       this.frame = new JFrame("My Drawing");
-       this.canvas = new Draw();
+    // Declare an instance of the drawing canvas,
+    // which is an inner class called DrawCanvas extending javax.swing.JPanel.
+    private DrawCanvas canvas;
+    private Sprite sprite;     // the moving object
 
-   }
-   public void Init()
-   {
-       Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-       screenSize.getHeight();
-       screenSize.getWidth();
+    // Constructor to set up the GUI components and event handlers
+    public Screen() {
+        canvas = new DrawCanvas();    // Construct the drawing canvas
+        canvas.setPreferredSize(new Dimension(CANVAS_WIDTH, CANVAS_HEIGHT));
 
-       this.screenHeight = screenSize.height;
-       this.screenWidth = screenSize.width;
+        // Set the Drawing JPanel as the JFrame's content-pane
+        Container cp = getContentPane();
+        cp.add(canvas);
+        // or "setContentPane(canvas);"
 
-       this.canvas.setSize(this.screenWidth, this.screenHeight);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);   // Handle the CLOSE button
+        pack();              // Either pack() the components; or setSize()
+        setTitle("......");  // "super" JFrame sets the title
+        setVisible(true);    // "super" JFrame show
 
-       this.frame.setBounds(0,0,this.screenWidth,this.screenHeight);
+        // "super" JFrame fires KeyEvent
+        addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent evt) {
+                switch(evt.getKeyCode()) {
+                    case KeyEvent.VK_LEFT:  moveLeft();  break;
+                    case KeyEvent.VK_RIGHT: moveRight(); break;
+                }
+            }
+        });
 
-       this.frame.add(this.canvas);
-       this.frame.pack();
+        // Construct a sprite given x, y, width, height, color
+        sprite = new Sprite(CANVAS_WIDTH / 2 - 5, CANVAS_HEIGHT / 2 - 40, 10, 80, Color.RED);
+    }
 
-       this.frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+    /**
+     * Define inner class DrawCanvas, which is a JPanel used for custom drawing.
+     */
+    private class DrawCanvas extends JPanel {
+        // Override paintComponent to perform your own painting
+        @Override
+        public void paintComponent(Graphics g) {
+            super.paintComponent(g);     // paint parent's background
+            setBackground(Color.BLACK);  // set background color for this JPanel
 
-       this.frame.setVisible(true);
+            super.paintComponent(g);
+            setBackground(CANVAS_BACKGROUND);
+            sprite.paint(g);  // the sprite paints itself
+        }
+    }
+    // Helper method to move the sprite left
+    private void moveLeft() {
+        // Save the current dimensions for repaint to erase the sprite
+        int savedX = sprite.x;
+        // update sprite
+        sprite.x -= 10;
+        // Repaint only the affected areas, not the entire JFrame, for efficiency
+        canvas.repaint(savedX, sprite.y, sprite.width, sprite.height); // Clear old area to background
+        canvas.repaint(sprite.x, sprite.y, sprite.width, sprite.height); // Paint new location
+    }
 
-   }
-   @Override
-   public void paint(Graphics g) {
-       g.fillOval(100, 100, 500, 500);
-   }
+    // Helper method to move the sprite right
+    private void moveRight() {
+        // Save the current dimensions for repaint to erase the sprite
+        int savedX = sprite.x;
+        // update sprite
+        sprite.x += 10;
+        // Repaint only the affected areas, not the entire JFrame, for efficiency
+        canvas.repaint(savedX, sprite.y, sprite.width, sprite.height); // Clear old area to background
+        canvas.repaint(sprite.x, sprite.y, sprite.width, sprite.height); // Paint at new location
+    }
+    // The entry main method
+    public static void main(String[] args) {
+        // Run the GUI codes on the Event-Dispatching thread for thread safety
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                Screen s = new Screen(); // Let the constructor do the job
 
-   public static void main(String[] args) {
-      Screen s = new Screen();
-      s.Init();
-
-
-   }
-
+            }
+        });
+    }
 }
