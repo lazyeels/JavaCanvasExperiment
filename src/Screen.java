@@ -37,12 +37,14 @@ public class Screen extends JFrame {
                 switch(evt.getKeyCode()) {
                     case KeyEvent.VK_LEFT:  moveLeft();  break;
                     case KeyEvent.VK_RIGHT: moveRight(); break;
+                    case KeyEvent.VK_UP:  moveUp();  break;
+                    case KeyEvent.VK_DOWN: moveDown(); break;
                 }
             }
         });
 
 
-        sprite = new Sprite("NPC",3, 3, 4, 26);
+        sprite = new Sprite("NPC",3, 3, 4, 30, 46);
         sprite.x = 100;
         sprite.y = 100;
     }
@@ -83,6 +85,29 @@ public class Screen extends JFrame {
         canvas.repaint(savedX, sprite.y, sprite.width, sprite.height); // Clear old area to background
         canvas.repaint(sprite.x, sprite.y, sprite.width, sprite.height); // Paint at new location
     }
+
+    // Helper method to move the sprite left
+    private void moveUp() {
+        // Save the current dimensions for repaint to erase the sprite
+        int savedY = sprite.y;
+        // update sprite
+        sprite.y -= 10;
+        // Repaint only the affected areas, not the entire JFrame, for efficiency
+        canvas.repaint(sprite.x, savedY, sprite.width, sprite.height); // Clear old area to background
+        canvas.repaint(sprite.x, sprite.y, sprite.width, sprite.height); // Paint new location
+    }
+
+    // Helper method to move the sprite right
+    private void moveDown() {
+        // Save the current dimensions for repaint to erase the sprite
+        int savedY = sprite.y;
+        // update sprite
+        sprite.y += 10;
+        // Repaint only the affected areas, not the entire JFrame, for efficiency
+        canvas.repaint(sprite.x, savedY, sprite.width, sprite.height); // Clear old area to background
+        canvas.repaint(sprite.x, sprite.y, sprite.width, sprite.height); // Paint at new location
+    }
+
     // The entry main method
     public static void main(String[] args) {
         // Run the GUI codes on the Event-Dispatching thread for thread safety
