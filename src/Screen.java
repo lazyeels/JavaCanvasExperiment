@@ -12,8 +12,8 @@ public class Screen extends JFrame {
 
     // Declare an instance of the drawing canvas,
     // which is an inner class called DrawCanvas extending javax.swing.JPanel.
-    private DrawCanvas canvas;
-    private Sprite sprite;     // the moving object
+    private final DrawCanvas canvas;
+    public Sprite sprite;     // the moving object
 
     // Constructor to set up the GUI components and event handlers
     public Screen() {
@@ -41,8 +41,10 @@ public class Screen extends JFrame {
             }
         });
 
-        // Construct a sprite given x, y, width, height, color
-        sprite = new Sprite(CANVAS_WIDTH / 2 - 5, CANVAS_HEIGHT / 2 - 40, 10, 80, Color.RED);
+
+        sprite = new Sprite("NPC",3, 3, 4, 26);
+        sprite.x = 100;
+        sprite.y = 100;
     }
 
     /**
@@ -87,7 +89,7 @@ public class Screen extends JFrame {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                Screen s = new Screen(); // Let the constructor do the job
+                new Screen(); // Let the constructor do the job
 
             }
         });
