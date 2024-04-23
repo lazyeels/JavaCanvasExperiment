@@ -38,11 +38,11 @@ public class Player {
         this.standing = new BufferedImage[]{Sprite.getSprite(1, 0)};
 
 // These are animation states
-        this.anim_walkLeft = new Animation(this.walkingLeft, 10);
-        this.anim_walkRight = new Animation(this.walkingRight, 10);
-        this.anim_walkUp = new Animation(this.walkingUp, 10);
-        this.anim_walkDown = new Animation(this.walkingDown, 10);
-        this.anim_idle = new Animation(this.standing, 10);
+        this.anim_walkLeft = new Animation(this.walkingLeft, 3);
+        this.anim_walkRight = new Animation(this.walkingRight, 3);
+        this.anim_walkUp = new Animation(this.walkingUp, 3);
+        this.anim_walkDown = new Animation(this.walkingDown, 3);
+        this.anim_idle = new Animation(this.standing, 3);
 
 // This is the actual animation
         this.animation = anim_idle;
@@ -56,7 +56,9 @@ public class Player {
         // update sprite
         this.x -= 10;
         this.animation = this.anim_walkLeft;
-        this.update();
+        this.animation.start();
+        this.animation.update();
+        //
         // Repaint only the affected areas, not the entire JFrame, for efficiency
         //canvas.repaint(savedX, player.y, player.width, player.height); // Clear old area to background
         //canvas.repaint(player.x, player.y, player.width, player.height); // Paint new location
@@ -69,7 +71,9 @@ public class Player {
         // update sprite
         this.x += 10;
         this.animation = this.anim_walkRight;
-        this.update();
+        this.animation.start();
+        this.animation.update();
+        //this.update();
         // Repaint only the affected areas, not the entire JFrame, for efficiency
         //canvas.repaint(savedX, player.y, player.width, player.height); // Clear old area to background
         //canvas.repaint(player.x, player.y, player.width, player.height); // Paint at new location
@@ -82,7 +86,9 @@ public class Player {
         // update sprite
         this.y -= 10;
         this.animation = this.anim_walkUp;
-        this.update();
+        this.animation.start();
+        this.animation.update();
+        //
         // Repaint only the affected areas, not the entire JFrame, for efficiency
         //canvas.repaint(player.x, savedY, this.width, this.height); // Clear old area to background
         //canvas.repaint(player.x, this.y, this.width, this.height); // Paint at new location
@@ -95,7 +101,9 @@ public class Player {
         // update sprite
         this.y += 10;
         this.animation = this.anim_walkDown;
-        this.update();
+        this.animation.start();
+        this.animation.update();
+        //
         // Repaint only the affected areas, not the entire JFrame, for efficiency
         //this.canvas.repaint(this.x, savedY, this.width, this.height); // Clear old area to background
         //this.canvas.repaint(this.x, this.y, this.width, this.height); // Paint at new location
@@ -103,7 +111,7 @@ public class Player {
 
     public void update()
     {
-        this.animation.update();
+        //this.animation.update();
     }
     public void paint(Graphics g) {
         //Image img = this.getSprite();

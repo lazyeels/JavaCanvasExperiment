@@ -37,15 +37,59 @@ public class Screen extends JFrame {
             @Override
             public void keyPressed(KeyEvent evt) {
                 switch(evt.getKeyCode()) {
-                    case KeyEvent.VK_LEFT:  player.moveLeft();  break;
-                    case KeyEvent.VK_RIGHT: player.moveRight(); break;
-                    case KeyEvent.VK_UP:  player.moveUp();  break;
-                    case KeyEvent.VK_DOWN: player.moveDown(); break;
+                    case KeyEvent.VK_LEFT:  moveLeft();  break;
+                    case KeyEvent.VK_RIGHT: moveRight(); break;
+                    case KeyEvent.VK_UP:  moveUp();  break;
+                    case KeyEvent.VK_DOWN: moveDown(); break;
                 }
             }
         });
     }
 
+
+    // Helper method to move the sprite left
+    public void moveLeft() {
+        // Save the current dimensions for repaint to erase the sprite
+        int savedX = player.x;
+        // update sprite
+        player.moveLeft();
+        // Repaint only the affected areas, not the entire JFrame, for efficiency
+        canvas.repaint(savedX, player.y, player.width, player.height); // Clear old area to background
+        canvas.repaint(player.x, player.y, player.width, player.height); // Paint new location
+    }
+
+    // Helper method to move the sprite right
+    public void moveRight() {
+        // Save the current dimensions for repaint to erase the sprite
+        int savedX = player.x;
+        player.moveRight();
+        // Repaint only the affected areas, not the entire JFrame, for efficiency
+        canvas.repaint(savedX, player.y, player.width, player.height); // Clear old area to background
+        canvas.repaint(player.x, player.y, player.width, player.height); // Paint at new location
+    }
+
+    // Helper method to move the sprite left
+    public void moveUp() {
+        // Save the current dimensions for repaint to erase the sprite
+        int savedY = player.y;
+        player.moveUp();
+        // Repaint only the affected areas, not the entire JFrame, for efficiency
+
+        canvas.repaint(player.x, savedY, player.width, player.height); // Clear old area to background
+        canvas.repaint(player.x, player.y, player.width, player.height); // Paint at new location
+    }
+
+    // Helper method to move the sprite right
+    public void moveDown() {
+        // Save the current dimensions for repaint to erase the sprite
+        int savedY = player.y;
+
+        player.moveDown();
+
+        // Repaint only the affected areas, not the entire JFrame, for efficiency
+        canvas.repaint(player.x, savedY, player.width, player.height); // Clear old area to background
+        canvas.repaint(player.x, player.y, player.width, player.height); // Paint at new location
+    }
     /**
      * Define inner class DrawCanvas, which is a JPanel used for custom drawing.
      */

@@ -94,8 +94,9 @@ public class Animation {
                     currentFrame = totalFrames - 1;
                 }
             }
-        }
 
+        }
+       // System.out.printf("CurrentFrame: %d (%d/%d)\n",currentFrame, frameCount, totalFrames);
     }
 
 }
