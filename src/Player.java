@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import javax.swing.*;    // Using Swing's components and containers
 
 public class Player {
     private BufferedImage[] walkingLeft; // Gets the upper left images of my sprite sheet
@@ -22,7 +23,7 @@ public class Player {
     public int width;
     public int height;
 
-    public Player()
+    public Player(Screen.DrawCanvas canvas)
     {
         this.x = 100;
         this.y = 100;
@@ -46,6 +47,8 @@ public class Player {
 // This is the actual animation
         this.animation = anim_idle;
     }
+
+
     // Helper method to move the sprite left
     public void moveLeft() {
         // Save the current dimensions for repaint to erase the sprite

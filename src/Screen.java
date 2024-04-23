@@ -28,10 +28,10 @@ public class Screen extends JFrame {
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);   // Handle the CLOSE button
         pack();              // Either pack() the components; or setSize()
-        setTitle("......");  // "super" JFrame sets the title
+        setTitle("Game");  // "super" JFrame sets the title
         setVisible(true);    // "super" JFrame show
 
-        player = new Player();
+        player = new Player(canvas);
 
         addKeyListener(new KeyAdapter() {
             @Override
@@ -49,7 +49,7 @@ public class Screen extends JFrame {
     /**
      * Define inner class DrawCanvas, which is a JPanel used for custom drawing.
      */
-    private class DrawCanvas extends JPanel {
+    public class DrawCanvas extends JPanel {
         // Override paintComponent to perform your own painting
         @Override
         public void paintComponent(Graphics g) {
