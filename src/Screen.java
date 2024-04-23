@@ -1,6 +1,8 @@
 import java.awt.*;       // Using AWT's Graphics and Color
 import javax.swing.*;    // Using Swing's components and containers
-import java.awt.event.*; // Using AWT's event classes and listener interfaces
+
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyAdapter;
 
 /** Custom Drawing Code Template */
 // A Swing application extends javax.swing.JFrame
@@ -9,11 +11,10 @@ public class Screen extends JFrame {
     public static final int CANVAS_WIDTH  = 640;
     public static final int CANVAS_HEIGHT = 480;
     public static final Color CANVAS_BACKGROUND = Color.BLACK;
-
+    public Player player;
     // Declare an instance of the drawing canvas,
     // which is an inner class called DrawCanvas extending javax.swing.JPanel.
-    private final DrawCanvas canvas;
-    public Sprite sprite;     // the moving object
+    public final DrawCanvas canvas;
 
     // Constructor to set up the GUI components and event handlers
     public Screen() {
@@ -30,23 +31,19 @@ public class Screen extends JFrame {
         setTitle("......");  // "super" JFrame sets the title
         setVisible(true);    // "super" JFrame show
 
-        // "super" JFrame fires KeyEvent
+        player = new Player();
+
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent evt) {
                 switch(evt.getKeyCode()) {
-                    case KeyEvent.VK_LEFT:  moveLeft();  break;
-                    case KeyEvent.VK_RIGHT: moveRight(); break;
-                    case KeyEvent.VK_UP:  moveUp();  break;
-                    case KeyEvent.VK_DOWN: moveDown(); break;
+                    case KeyEvent.VK_LEFT:  player.moveLeft();  break;
+                    case KeyEvent.VK_RIGHT: player.moveRight(); break;
+                    case KeyEvent.VK_UP:  player.moveUp();  break;
+                    case KeyEvent.VK_DOWN: player.moveDown(); break;
                 }
             }
         });
-
-
-        sprite = new Sprite("NPC",3, 3, 4, 30, 46);
-        sprite.x = 100;
-        sprite.y = 100;
     }
 
     /**
@@ -61,53 +58,10 @@ public class Screen extends JFrame {
 
             super.paintComponent(g);
             setBackground(CANVAS_BACKGROUND);
-            sprite.paint(g);  // the sprite paints itself
+
+            player.paint(g);  // the sprite paints itself
         }
     }
-    // Helper method to move the sprite left
-    private void moveLeft() {
-        // Save the current dimensions for repaint to erase the sprite
-        int savedX = sprite.x;
-        // update sprite
-        sprite.x -= 10;
-        // Repaint only the affected areas, not the entire JFrame, for efficiency
-        canvas.repaint(savedX, sprite.y, sprite.width, sprite.height); // Clear old area to background
-        canvas.repaint(sprite.x, sprite.y, sprite.width, sprite.height); // Paint new location
-    }
-
-    // Helper method to move the sprite right
-    private void moveRight() {
-        // Save the current dimensions for repaint to erase the sprite
-        int savedX = sprite.x;
-        // update sprite
-        sprite.x += 10;
-        // Repaint only the affected areas, not the entire JFrame, for efficiency
-        canvas.repaint(savedX, sprite.y, sprite.width, sprite.height); // Clear old area to background
-        canvas.repaint(sprite.x, sprite.y, sprite.width, sprite.height); // Paint at new location
-    }
-
-    // Helper method to move the sprite left
-    private void moveUp() {
-        // Save the current dimensions for repaint to erase the sprite
-        int savedY = sprite.y;
-        // update sprite
-        sprite.y -= 10;
-        // Repaint only the affected areas, not the entire JFrame, for efficiency
-        canvas.repaint(sprite.x, savedY, sprite.width, sprite.height); // Clear old area to background
-        canvas.repaint(sprite.x, sprite.y, sprite.width, sprite.height); // Paint new location
-    }
-
-    // Helper method to move the sprite right
-    private void moveDown() {
-        // Save the current dimensions for repaint to erase the sprite
-        int savedY = sprite.y;
-        // update sprite
-        sprite.y += 10;
-        // Repaint only the affected areas, not the entire JFrame, for efficiency
-        canvas.repaint(sprite.x, savedY, sprite.width, sprite.height); // Clear old area to background
-        canvas.repaint(sprite.x, sprite.y, sprite.width, sprite.height); // Paint at new location
-    }
-
     // The entry main method
     public static void main(String[] args) {
         // Run the GUI codes on the Event-Dispatching thread for thread safety
